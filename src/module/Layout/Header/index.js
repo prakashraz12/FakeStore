@@ -12,10 +12,11 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import { useGetAllProductQuery } from '../../../services/api.get';
+import { Autocomplete } from '@mui/material';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -57,6 +58,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+
+
+
+const {data, isLoading, isError} = useGetAllProductQuery();
+const [query, setQuery] = React.useState("");
+
+{
+  isLoading ? <h1>loading</h1> : isError ? <h1>error</h1> :(
+<h1>hello</h1>
+  )
+}
+const itmesFilter = data?.filter((item) =>
+item.title.toLowerCase().includes(query.toLowerCase() || item.category.toLowerCase().includes(query.toLocaleLowerCase()))
+);
+const handleSearch = (e)=>{
+  setQuery(e.target.value);
+}
+
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -175,14 +195,27 @@ export default function Header() {
           >
             MUI
           </Typography>
+        
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
+            <Autocomplete freeSolo
+        disableClearable
+        getOptionLabel={(itmesFilter)=>{console.log(itmesFilter)}}
+        options={itmesFilter}
+        renderInput={(params) => {
+          return (
             <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            {...params}
+            
+            placeholder="Search…"
+            onChange={handleSearch}
+          />
+          )
+        }
+      
+        }/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

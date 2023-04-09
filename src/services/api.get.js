@@ -15,4 +15,4 @@ export const FakeApi = createApi({
 })
 
 
-export const { useGetProductsbyIdQuery, useGetAllProductQuery } = FakeApi
+export const { useGetProductsbyIdQuery, useGetAllProductQuery} = FakeApi

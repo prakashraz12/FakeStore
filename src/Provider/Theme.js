@@ -9,7 +9,7 @@ purple:{
 export const theme = createTheme({
     palette:{
         primary:{
-            main:"#ffff"
+            main:ColorOptions.purple[0]
         },
         secondary:{
             main: ColorOptions.purple[0]
